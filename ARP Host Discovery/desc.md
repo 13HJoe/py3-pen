@@ -1,13 +1,8 @@
 - Address Resolution Protocol
 	- ARP Request - Broadcast
-	  collapsed:: true
-		- ![image.png](../assets/image_1721647131179_0.png)
 	- ARP Response - Unicast [from the device with the specified MAC address]
-	  collapsed:: true
-		- ![image.png](../assets/image_1721647176215_0.png)
-- `scapy` - Module
+=- `scapy` - Module
 - <u>ARPing-based scan</u>
-  collapsed:: true
 	- ```
 	  import scapy.all as scapy
 	  
@@ -18,7 +13,6 @@
 	  ```
 	- ![image.png](../assets/image_1721654181607_0.png)
 - **Manual**
-  collapsed:: true
 	- 1. Create ARP request directed to broadcast MAC asking for IP
 		- ARP-Request : `arp_req = scapy.ARP(pdst=ip)` asking for `ip`
 		- To print fields of packet : `scapy.ls(scapy.ARP())`
@@ -30,4 +24,3 @@
 		- response -> tuple of 2 lists (answered packets[], unanswered packets [])
 	- 3. Parse the response.
 	  4. Print result.
--
