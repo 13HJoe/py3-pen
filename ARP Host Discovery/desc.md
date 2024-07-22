@@ -11,7 +11,6 @@
 	  
 	  scan("192.168.1.1/24")
 	  ```
-	- ![image.png](../assets/image_1721654181607_0.png)
 - **Manual**
 	- 1. Create ARP request directed to broadcast MAC asking for IP
 		- ARP-Request : `arp_req = scapy.ARP(pdst=ip)` asking for `ip`
