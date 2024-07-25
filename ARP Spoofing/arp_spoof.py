@@ -44,7 +44,7 @@ def restore_net(src, dst):
                          hwdst=get_mac(dst),
                          psrc=src,
                          hwsrc=get_mac(src))
-    scapy.send(packet, verbose=False)
+    scapy.send(packet, count=4, verbose=False)
 
 def run(t1, t2):
     t1_mac = get_mac(t1)
