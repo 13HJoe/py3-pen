@@ -2,5 +2,3 @@
 	- `arpspoof` -> `arpspoof -i <interface> -t <target-ip1>  <target-ip2>`
 		- Poison's both ARP tables
 	- Enable Port Forwarding -> `echo 1 > /proc/sys/net/ipv4/ip_forward`
-	-
--
