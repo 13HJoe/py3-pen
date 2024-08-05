@@ -1,5 +1,20 @@
 import requests
 import re
+from argparse import ArgumentParser
+
+def get_args():
+    parser = ArgumentParser()
+    parser.add_argument("-target",
+                        dest="target_url",
+                        required=True,
+                        help="Target URL")
+    parser.add_argument("-wsub",
+                        dest = "domain_list",
+                        help = "List of possible Subdomains")
+    parser.add_argument("-wdir",
+                        dest = "directory_list",
+                        help = "List of possible subdirectories")
+    return parser.parse_args()
 
 def GET(url):
     try:
@@ -59,15 +74,48 @@ def crawl_by_hrefs(url):
         if not link:
             continue
         if link[0] != 'h':
-            link = "https://"+url+link
+            if link[0]==".":
+                link = link[2:]
+            link = "https://"+url+"/"+link
+
         if link not in target_url_refs:
             target_url_refs.add(link)
             print(link)
             crawl_by_hrefs(link)
 
- 
-#-------------------------MAIN----------------------------
+def get_file_data(filename):
+    try:
+        f_obj = open(filename,'r')
+        ret = []
+        for word in f_obj.readlines():
+            word = word.strip()
+            ret.append(word)
+        f_obj.close()
+        return ret
+    except FileNotFoundError:
+        print("[-] Wordlist not found -> ",filename)
 
-# subdomain_enumerate("wordlist.txt","google.com")
-# directory_enumeration("dir.txt","zsecurity.org")
-crawl_by_hrefs("192.168.1.35/mutillidae")
+def run(url, subdomain_list, directory_list):
+    
+    #subdomain_enumerate(subdomain_list, url)
+    #directory_enumeration(directory_list, url)
+    crawl_by_hrefs(url)
+
+#-------------------------MAIN----------------------------
+def main():
+    args = get_args()
+    target_base_url = args.target_url
+    subdomain_list, directory_list = [],[]
+
+    if args.domain_list:
+        val = get_file_data(args.domain_list)
+        subdomain_list.append(val)
+
+    if args.directory_list:
+        val = get_file_data(args.directory_list)
+        directory_list.append(val)
+    
+    run(target_base_url, subdomain_list, directory_list)
+
+if __name__ == "__main__":
+    main()
