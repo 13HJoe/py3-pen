@@ -40,29 +40,24 @@ def directory_enumeration(wordlist, target_base_url):
         count+=1
     file_object.close()
 
-
 def extract_hrefs(url):
-    response = GET(url).content
+    response = GET(url)
+    if not response:
+        return None
+    response = response.content
     href_links = re.findall('(?:href=")(.*?)"', response.decode('utf-8'))
     return href_links
-    '''
-    for link in href_links:
-        if '#' in link:
-            link = link.split("#")[0]
-        if link[0] != 'h':
-            link = "https://"+url+link[0]
-        target_url_refs.add(link)
-    '''
 
 def crawl_by_hrefs(url):
     refs = extract_hrefs(url)
-    print(url, refs)
     if not refs:
         return
     target_url_refs = set()
     for link in refs:
         if '#' in link:
             link = link.split("#")[0]
+        if not link:
+            continue
         if link[0] != 'h':
             link = "https://"+url+link
         if link not in target_url_refs:
@@ -70,9 +65,9 @@ def crawl_by_hrefs(url):
             print(link)
             crawl_by_hrefs(link)
 
-
-#-------------------------MAIN----------------------------#
+ 
+#-------------------------MAIN----------------------------
 
 # subdomain_enumerate("wordlist.txt","google.com")
 # directory_enumeration("dir.txt","zsecurity.org")
-crawl_by_hrefs("amazon.com")
+crawl_by_hrefs("192.168.1.35/mutillidae")
