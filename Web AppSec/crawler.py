@@ -1,6 +1,7 @@
 import requests
 import re
 from argparse import ArgumentParser
+from collections import deque
 
 def get_args():
     parser = ArgumentParser()
@@ -63,25 +64,37 @@ def extract_hrefs(url):
     href_links = re.findall('(?:href=")(.*?)"', response.decode('utf-8'))
     return href_links
 
-def crawl_by_hrefs(url):
-    refs = extract_hrefs(url)
-    if not refs:
-        return
-    target_url_refs = set()
-    for link in refs:
-        if '#' in link:
-            link = link.split("#")[0]
-        if not link:
-            continue
-        if link[0] != 'h':
-            if link[0]==".":
-                link = link[2:]
-            link = "https://"+url+"/"+link
 
-        if link not in target_url_refs:
-            target_url_refs.add(link)
-            print(link)
-            crawl_by_hrefs(link)
+def crawl_by_hrefs(url):
+
+    visited = set()
+    queue = deque([url])
+    # BREADTH-FIRST SEARCH GOING CRAZY 
+    while queue:
+        node = queue.popleft()
+        refs = extract_hrefs(node)
+        if not refs:
+            continue
+        for link in refs:
+            if '#' in link:
+                link = link.split("#")[0]
+            if not link:
+                continue
+            if link[0] != 'h':
+                if link[0]==".":
+                    link = link[2:]
+                link = "https://"+url+"/"+link                    
+            
+            if link not in visited:
+                visited.add(link)
+                if url not in link:
+                    print("[-] External Link ->", link)
+                    continue
+                print("[+]",link)
+                queue.append(link)
+                
+    print("[+] Finished Crawling")
+            
 
 def get_file_data(filename):
     try:
@@ -116,6 +129,7 @@ def main():
         directory_list.append(val)
     
     run(target_base_url, subdomain_list, directory_list)
+    exit(0)
 
 if __name__ == "__main__":
     main()
