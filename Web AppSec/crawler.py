@@ -25,6 +25,7 @@ def subdomain_enumerate(wordlist,target_base_url):
             print("\n[+] ", url_build, " | ", response)
         print("\r[+] Requests sent ->", count, end='')
         count+=1
+    file_object.close()
 
 def directory_enumeration(wordlist, target_base_url):
     file_object = open(wordlist, 'r')
@@ -37,6 +38,8 @@ def directory_enumeration(wordlist, target_base_url):
             print("\n[+] ", response.status_code ," ",url_build)
         print("\r[+] Requests sent ->", count, end='')
         count+=1
+    file_object.close()
+
 
 def extract_hrefs(url):
     response = GET(url).content
