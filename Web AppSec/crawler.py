@@ -25,12 +25,15 @@ def subdomain_enumerate(wordlist,target_base_url):
 
 def directory_enumeration(wordlist, target_base_url):
     file_object = open(wordlist, 'r')
+    count = 1
     for subdirectory in file_object:
         subdirectory = subdirectory.strip()
         url_build = target_base_url + "/" + subdirectory
         response = GET(url_build)
-        if response:
-            print("[+] ", response.status_code ," ",url_build)
+        if response.status_code != 404:
+            print("\n[+] ", response.status_code ," ",url_build)
+        print("\r[+] Requests sent ->", count, end='')
+        count+=1
 
 # subdomain_enumerate("wordlist.txt","google.com")
-directory_enumeration("dir.txt","kluniversity.in")
+directory_enumeration("dir.txt","google.com")
