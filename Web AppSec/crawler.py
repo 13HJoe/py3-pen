@@ -1,4 +1,5 @@
 import requests
+import re
 
 def GET(url):
     try:
@@ -14,14 +15,16 @@ def GET(url):
 
 def subdomain_enumerate(wordlist,target_base_url):
     file_object = open(wordlist,'r')
-
+    count = 1
     for subdomain in file_object:
         # strip the extra whitespace chars
         subdomain = subdomain.strip()
         url_build = subdomain + "." +target_base_url
         response = GET(url_build)
         if response:
-            print("[+] ", url_build, " | ", response)
+            print("\n[+] ", url_build, " | ", response)
+        print("\r[+] Requests sent ->", count, end='')
+        count+=1
 
 def directory_enumeration(wordlist, target_base_url):
     file_object = open(wordlist, 'r')
@@ -35,5 +38,38 @@ def directory_enumeration(wordlist, target_base_url):
         print("\r[+] Requests sent ->", count, end='')
         count+=1
 
+def extract_hrefs(url):
+    response = GET(url).content
+    href_links = re.findall('(?:href=")(.*?)"', response.decode('utf-8'))
+    return href_links
+    '''
+    for link in href_links:
+        if '#' in link:
+            link = link.split("#")[0]
+        if link[0] != 'h':
+            link = "https://"+url+link[0]
+        target_url_refs.add(link)
+    '''
+
+def crawl_by_hrefs(url):
+    refs = extract_hrefs(url)
+    print(url, refs)
+    if not refs:
+        return
+    target_url_refs = set()
+    for link in refs:
+        if '#' in link:
+            link = link.split("#")[0]
+        if link[0] != 'h':
+            link = "https://"+url+link
+        if link not in target_url_refs:
+            target_url_refs.add(link)
+            print(link)
+            crawl_by_hrefs(link)
+
+
+#-------------------------MAIN----------------------------#
+
 # subdomain_enumerate("wordlist.txt","google.com")
-directory_enumeration("dir.txt","google.com")
+# directory_enumeration("dir.txt","zsecurity.org")
+crawl_by_hrefs("amazon.com")
