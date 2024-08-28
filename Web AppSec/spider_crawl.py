@@ -19,6 +19,8 @@ def get_args():
 
 def GET(url):
     try:
+        if url[0] == '.':
+            url = url[1:]
         return requests.get("http://"+url)
         '''
         get_response = requests.get("http://"+url)
@@ -30,31 +32,27 @@ def GET(url):
         pass 
 
 def subdomain_enumerate(wordlist,target_base_url):
-    file_object = open(wordlist,'r')
-    count = 1
-    for subdomain in file_object:
+    count = 0
+    for subdomain in wordlist[0]:
         # strip the extra whitespace chars
-        subdomain = subdomain.strip()
+        #subdomain = subdomain.strip()
         url_build = subdomain + "." +target_base_url
         response = GET(url_build)
         if response:
             print("\n[+] ", url_build, " | ", response)
         print("\r[+] Requests sent ->", count, end='')
         count+=1
-    file_object.close()
 
 def directory_enumeration(wordlist, target_base_url):
-    file_object = open(wordlist, 'r')
-    count = 1
-    for subdirectory in file_object:
-        subdirectory = subdirectory.strip()
+    for subdirectory in wordlist[0]:
+        #subdirectory = subdirectory.decode()
+        #subdirectory = subdirectory.strip()
         url_build = target_base_url + "/" + subdirectory
         response = GET(url_build)
         if response.status_code != 404:
             print("\n[+] ", response.status_code ," ",url_build)
         print("\r[+] Requests sent ->", count, end='')
         count+=1
-    file_object.close()
 
 def extract_hrefs(url):
     response = GET(url)
@@ -63,7 +61,6 @@ def extract_hrefs(url):
     response = response.content
     href_links = re.findall('(?:href=")(.*?)"', response.decode('utf-8'))
     return href_links
-
 
 def crawl_by_hrefs(url):
 
@@ -95,7 +92,6 @@ def crawl_by_hrefs(url):
                 
     print("[+] Finished Crawling")
             
-
 def get_file_data(filename):
     try:
         f_obj = open(filename,'r')
@@ -110,8 +106,8 @@ def get_file_data(filename):
 
 def run(url, subdomain_list, directory_list):
     
-    #subdomain_enumerate(subdomain_list, url)
-    #directory_enumeration(directory_list, url)
+    subdomain_enumerate(subdomain_list, url)
+    directory_enumeration(directory_list, url)
     crawl_by_hrefs(url)
 
 #-------------------------MAIN----------------------------
