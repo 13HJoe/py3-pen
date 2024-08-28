@@ -7,7 +7,7 @@
 ### Subdomain Enumeration
 ![image](https://github.com/user-attachments/assets/5c8693f5-f7d5-4960-ad2b-6b208a62781b)
 
-## Subdirectory Enumeration
+### Subdirectory Enumeration
 ![image](https://github.com/user-attachments/assets/4f5002fb-52d8-4256-a0c2-48f0b9116363)
 
 ### Brute-Force
