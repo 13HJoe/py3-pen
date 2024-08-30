@@ -2,7 +2,9 @@
 ![image](https://github.com/user-attachments/assets/f2fb79b5-7308-4cb0-b30e-ea5ca26e6793)
 
 ### ARP Spoofing
-![image](https://github.com/user-attachments/assets/1044da08-07c3-42f2-8593-82f2ae0c5451)
+![Screenshot 2024-08-30 085902](https://github.com/user-attachments/assets/ad542404-4cb3-4261-9ab8-1e8bae914167)
+![Screenshot 2024-08-30 085902](https://github.com/user-attachments/assets/0b11bcaa-9357-443d-a95d-466e7ab17208)
+
 
 ### Subdomain Enumeration
 ![image](https://github.com/user-attachments/assets/5c8693f5-f7d5-4960-ad2b-6b208a62781b)
